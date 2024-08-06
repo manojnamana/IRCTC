@@ -44,5 +44,5 @@
       "last 1 safari version"
     ]
   },
-   "proxy": "https://irctc-pi.vercel.app/"
+   "proxy": "https://backend-irctc.vercel.app/"
 }
