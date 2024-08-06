@@ -36,7 +36,7 @@ const Login = () => {
       
      
       try{
-        const response =  await axios.post('/api/login', { email, password, });
+        const response =  await axios.post('https://backend-irctc.vercel.app/api/login/', { email, password, });
         if (response.status === 200) {
           setSnackbarMessage('Login successful!');
           setOpenSnackbar(true);
