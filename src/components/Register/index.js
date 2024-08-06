@@ -42,7 +42,7 @@ const Register = () => {
 
 
       try {
-       const response =  await axios.post('/api/register', {firstName,lastName, email, password,phonenumber });
+       const response =  await axios.post('/api/register', {first_name:firstName,last_name:lastName, email, password,phone_number:phonenumber });
         if (response.status === 200) {
           setSnackbarMessage('Successfully Registered!');
           setOpenSuccessSnackbar(true);
