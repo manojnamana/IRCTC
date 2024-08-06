@@ -41,8 +41,8 @@ const Register = () => {
 
 
       try {
-       const response =  await axios.post('/api/auth/register', { username:email, password, role:"user" });
-        if (response.status === 201) {
+       const response =  await axios.post('/api/register', { username:email, password, role:"user" });
+        if (response.status === 200) {
           setSnackbarMessage('Successfully Registered!');
           setOpenSuccessSnackbar(true);
           setTimeout(() => navigate("/"), 3000); 
