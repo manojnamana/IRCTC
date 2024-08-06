@@ -42,7 +42,7 @@ const Register = () => {
 
 
       try {
-       const response =  await axios.post('/api/register', {firstName,lastName, email, password,phonenumber, role:"user" });
+       const response =  await axios.post('/api/register', {firstName,lastName, email, password,phonenumber });
         if (response.status === 200) {
           setSnackbarMessage('Successfully Registered!');
           setOpenSuccessSnackbar(true);
@@ -122,7 +122,7 @@ const Register = () => {
             </FormControl>
           </Grid>
           <Grid xs={12}>
-            <FormControl sx={{ ml: 2, width: '95%' }} required variant="outlined">
+            <FormControl sx={{ ml: 2, width: '95%' ,mb:3}} required variant="outlined">
               <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-password"
@@ -147,12 +147,13 @@ const Register = () => {
             </FormControl>
           </Grid>
           <Grid xs={12}>
-            <FormControl sx={{ ml: 1, width: '95%' }} variant="outlined">
+            <FormControl sx={{ ml: 2, width: '95%' }} variant="outlined">
               <TextField
                 id="phonenumber"
                 label="Phonenumber"
                 required
                 placeholder='Phonenumber'
+                type='number'
                 value={phonenumber}
                 onChange={(e) => setPhonenumber (e.target.value)}
                 sx={{ mb: 3 }}
