@@ -42,7 +42,7 @@ const Register = () => {
 
 
       try {
-       const response =  await axios.post('api/register/', {first_name:firstName,last_name:lastName, email, password,phone_number:phonenumber });
+       const response =  await axios.post('https://backend-irctc.vercel.app/api/register/', {first_name:firstName,last_name:lastName, email, password,phone_number:phonenumber });
         if (response.status === 201 || response.status === 200) {
           setSnackbarMessage('Successfully Registered!');
           setOpenSuccessSnackbar(true);
