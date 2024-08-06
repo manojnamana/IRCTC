@@ -14,6 +14,7 @@ const Register = () => {
   const [firstName, setFirstName] = React.useState('');
   const [lastName, setLastName] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [phonenumber, setPhonenumber] = React.useState('');
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [openSuccessSnackbar, setOpenSuccessSnackbar] = React.useState(false);
   const [snackbarMessage, setSnackbarMessage] = React.useState('');
@@ -31,7 +32,7 @@ const Register = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!firstName || !lastName  || !email || !password) {
+    if (!firstName || !lastName  || !email || !password || !phonenumber) {
       setSnackbarMessage('Please fill in all fields.');
       setOpenSnackbar(true);
     } else if (!validateEmail(email)) {
@@ -41,7 +42,7 @@ const Register = () => {
 
 
       try {
-       const response =  await axios.post('/api/register', { username:email, password, role:"user" });
+       const response =  await axios.post('/api/register', {firstName,lastName, email, password,phonenumber, role:"user" });
         if (response.status === 200) {
           setSnackbarMessage('Successfully Registered!');
           setOpenSuccessSnackbar(true);
@@ -145,6 +146,20 @@ const Register = () => {
               />
             </FormControl>
           </Grid>
+          <Grid xs={12}>
+            <FormControl sx={{ ml: 1, width: '95%' }} variant="outlined">
+              <TextField
+                id="phonenumber"
+                label="Phonenumber"
+                required
+                placeholder='Phonenumber'
+                value={phonenumber}
+                onChange={(e) => setPhonenumber (e.target.value)}
+                sx={{ mb: 3 }}
+              />
+            </FormControl>
+          </Grid>
+
         </Grid>
         <Button variant='contained' type='submit' sx={{ my: 3 }}>Register</Button>
 
