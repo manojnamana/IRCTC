@@ -1,12 +1,13 @@
 import * as React from 'react';
+import {useState,useEffect} from "react"
 import Box from '@mui/material/Box';
-
 import { Button, FormControl, IconButton, InputLabel, OutlinedInput, Paper, Typography, Snackbar, Alert, Stack } from '@mui/material';
-import { Link, useNavigate,useParams } from "react-router-dom";
+import { Link, useNavigate,useLocation } from "react-router-dom";
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import axios from 'axios';
+import queryString from 'query-string';
 
 const ResetPassword = () => {
 const [confPassword,setConfPassword] = React.useState('');
@@ -20,9 +21,15 @@ const [confPassword,setConfPassword] = React.useState('');
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleClickShowConfPassword = () => setShowConfPassword((show) => !show);
   const handleMouseDownPassword = (event) => event.preventDefault();
+  const location = useLocation();
+  const [uidb64, setUidb64] = useState('');
+  const [token, setToken] = useState('');
 
-
-  const { uidb64, token } = useParams();
+  useEffect(() => {
+    const { uidb64, token } = queryString.parse(location.search);
+    setUidb64(uidb64);
+    setToken(token);
+  }, [location.search]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
