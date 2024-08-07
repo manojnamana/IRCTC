@@ -2,7 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 
 import { Button, FormControl, IconButton, InputLabel, OutlinedInput, Paper, Typography, Snackbar, Alert, Stack } from '@mui/material';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate,useParams } from "react-router-dom";
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -22,7 +22,7 @@ const [confPassword,setConfPassword] = React.useState('');
   const handleMouseDownPassword = (event) => event.preventDefault();
 
 
-  
+  const { uidb64, token } = useParams();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -36,14 +36,14 @@ const [confPassword,setConfPassword] = React.useState('');
       
      
       try{
-        const response =  await axios.post(`https://railways-three.vercel.app/api/password-reset-confirm/uidb64/token/`, { new_password:confPassword });
+        const response =  await axios.post(`https://railways-three.vercel.app/api/password-reset-confirm/${uidb64}/${token}/`, { new_password:confPassword });
         if (response.status === 200) {
           setSnackbarMessage('Password Reseted successful!');
           setOpenSnackbar(true);
           setTimeout(() => navigate("/"), 3000); 
       }
     }catch(error){
-      setSnackbarMessage(error.response?.data?.error );
+      setSnackbarMessage(error.response?.data?.error|| "Error resetting password" );
         setOpenSnackbar(true);
       }
     }
