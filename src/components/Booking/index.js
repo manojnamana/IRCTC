@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Box, Paper, Typography, Button, TextField, Autocomplete, FormControl, Select, MenuItem, Grid, Snackbar, Alert, Stack } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 
+
 export default function Booking() {
   const [fromDestination, setFromDestination] = useState('');
   const [toDestination, setToDestination] = useState('');
@@ -44,6 +45,16 @@ export default function Booking() {
     setOpenSnackbar(false);
   };
 
+  const getTodayDate = () => {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
+  // const today = new Date();
+
   return (
     <Box display={'flex'} justifyContent={"center"} flexDirection={"column"} alignItems={"center"} mt={"4%"}>
       <Paper elevation={3} sx={{ p: 8 }} component={"form"} onSubmit={handleSubmit}>
@@ -74,8 +85,17 @@ export default function Booking() {
           <Grid xs={5} mr={3}>
             <Typography fontWeight={"bold"}>Journey Date</Typography>
             <Paper p={3} sx={{ width: 162 }}>
-              <TextField type='date' placeholder='date' value={date} onChange={handleDateChange} />
+              <TextField type='date' placeholder='date' min={getTodayDate()} value={date} onChange={handleDateChange} />
             </Paper>
+             {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <DatePicker
+        label="Select a date"
+        value={date}
+        onChange={(newValue) => setDate(newValue)}
+        minDate={today}
+        renderInput={(params) => <TextField {...params} />}
+      />
+    </LocalizationProvider> */}
           </Grid>
           <Grid xs={5}>
             <Typography fontWeight={"bold"}>Journey Quota</Typography>

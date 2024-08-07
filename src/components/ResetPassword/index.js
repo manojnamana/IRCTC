@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
+
 import { Button, FormControl, IconButton, InputLabel, OutlinedInput, Paper, Typography, Snackbar, Alert, Stack } from '@mui/material';
 import { Link, useNavigate } from "react-router-dom";
 import InputAdornment from '@mui/material/InputAdornment';
@@ -8,39 +8,39 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import axios from 'axios';
 
-const Login = () => {
-  const [email, setEmail] = React.useState('');
+const ResetPassword = () => {
+const [confPassword,setConfPassword] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [showPassword, setShowPassword] = React.useState(false);
+  const [showConfPassword, setShowConfPassword] = React.useState(false);
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [snackbarMessage, setSnackbarMessage] = React.useState('');
   const navigate = useNavigate();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleClickShowConfPassword = () => setShowConfPassword((show) => !show);
   const handleMouseDownPassword = (event) => event.preventDefault();
 
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
+
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!email || !password) {
+    if (!confPassword || !password) {
       setSnackbarMessage('Please fill in all fields.');
       setOpenSnackbar(true);
-    } else if (!validateEmail(email)) {
-      setSnackbarMessage('Please enter a valid email address.');
+    } else if (password !== confPassword) {
+      setSnackbarMessage('Password and Confirm Password Should Be Same');
       setOpenSnackbar(true);
     } else {
       
      
       try{
-        const response =  await axios.post('https://railways-three.vercel.app/api/login/', { email, password, });
+        const response =  await axios.post(`https://railways-three.vercel.app/api/password-reset-confirm/uidb64/token/`, { new_password:confPassword });
         if (response.status === 200) {
-          setSnackbarMessage('Login successful!');
+          setSnackbarMessage('Password Reseted successful!');
           setOpenSnackbar(true);
-          setTimeout(() => navigate("/checktrains"), 3000); 
+          setTimeout(() => navigate("/"), 3000); 
       }
     }catch(error){
       setSnackbarMessage(error.response?.data?.error );
@@ -67,25 +67,8 @@ const Login = () => {
         onSubmit={handleSubmit}
       >
         <Typography fontSize={{ md: "20", xs: 25 }} color={"Green"} fontWeight={"bold"} mb={3}>
-          IRCTC Login
+          IRCTC Reset Password
         </Typography>
-        <FormControl sx={{ m: 1, width: '80%' }} variant="outlined">
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
-            name="email"
-            label="Email Address"
-            sx={{ mb: 3 }}
-            placeholder='Email'
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            error={!validateEmail(email) && email.length > 0}
-            helperText={!validateEmail(email) && email.length > 0 ? "Invalid email format" : ""}
-          />
-        </FormControl>
         <FormControl sx={{ m: 1, width: '80%' }} required variant="outlined">
           <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
           <OutlinedInput
@@ -109,10 +92,32 @@ const Login = () => {
             label="Password"
           />
         </FormControl>
-        <Button variant='contained' type='submit' sx={{ my: 3 }}>Login</Button>
+        <FormControl sx={{ m: 1, width: '80%' }} required variant="outlined">
+          <InputLabel htmlFor="outlined-adornment-ConfirmPassword">Confirm Password</InputLabel>
+          <OutlinedInput
+            placeholder='Confirm Password'
+            id="outlined-adornment-password"
+            type={showConfPassword ? 'text' : 'password'}
+            value={confPassword}
+            onChange={(e) => setConfPassword(e.target.value)}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowConfPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showConfPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+            label="ConfirmPassword"
+          />
+        </FormControl>
+        <Button variant='contained' type='submit' sx={{ my: 3 }}>Submit</Button>
           <Stack direction={{md:"row",xs:"column"}} display={"flex"} justifyContent={"space-between"} spacing={4}>
         <Link to="/register" style={{ textDecoration: "none", fontSize: 20 }}>Create New Account</Link>
-        <Link to="/forgotpassword" style={{ textDecoration: "none", fontSize: 20 }}>Forgot password ?</Link>
         </Stack>
       </Paper>
 
@@ -121,7 +126,7 @@ const Login = () => {
         autoHideDuration={6000}
         onClose={handleCloseSnackbar}
       >
-        <Alert onClose={handleCloseSnackbar} severity={snackbarMessage === 'Login successful!' ? 'success' : 'error'} sx={{ width: '100%' }}>
+        <Alert onClose={handleCloseSnackbar} severity={snackbarMessage === 'Password Reseted successful!' ? 'success' : 'error'} sx={{ width: '100%' }}>
           {snackbarMessage}
         </Alert>
       </Snackbar>
@@ -129,4 +134,4 @@ const Login = () => {
   );
 }
 
-export default Login;
+export default ResetPassword;
