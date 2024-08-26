@@ -2,7 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button, FormControl, Grid, IconButton, InputLabel, OutlinedInput, Paper, Typography, Snackbar, Alert, Select, MenuItem } from '@mui/material';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -23,7 +23,7 @@ const Register = () => {
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => event.preventDefault();
-  // const navigate = useNavigate();
+   const navigate = useNavigate()
 
   const validateEmail = (email) => {
     // Basic email validation regex
@@ -41,19 +41,21 @@ const Register = () => {
       setSnackbarMessage('Please enter a valid email address.');
       setOpenSnackbar(true);
     } else {
+      setSnackbarMessage('Registertion Success!');
+      setOpenSuccessSnackbar(true);
+      setTimeout(() => navigate("/"), 3000);
 
-
-      try {
-       const response =  await axios.post('https://railways-three.vercel.app/api/register/', {first_name:firstName,last_name:lastName, email, password,phone_number:phonenumber,date_of_birth:dateOfBirth,gender });
-        if (response.status === 201 || response.status === 200) {
-          setSnackbarMessage('Verfication Link Sent To Your Mail!');
-          setOpenSuccessSnackbar(true);
-          // setTimeout(() => navigate("/"), 3000); 
-        }
-      } catch (error) {
-        setSnackbarMessage(error.response?.data?.error );
-        setOpenSnackbar(true);
-      }
+      // try {
+      //  const response =  await axios.post('https://railways-three.vercel.app/api/register/', {first_name:firstName,last_name:lastName, email, password,phone_number:phonenumber,date_of_birth:dateOfBirth,gender });
+      //   if (response.status === 201 || response.status === 200) {
+      //     setSnackbarMessage('Verfication Link Sent To Your Mail!');
+      //     setOpenSuccessSnackbar(true);
+      //     // setTimeout(() => navigate("/"), 3000); 
+      //   }
+      // } catch (error) {
+      //   setSnackbarMessage(error.response?.data?.error );
+      //   setOpenSnackbar(true);
+      // }
     }
   };
 

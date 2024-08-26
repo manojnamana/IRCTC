@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button, FormControl, Paper, Typography, Snackbar, Alert, Stack } from '@mui/material';
 import { Link, useNavigate } from "react-router-dom";
-import axios from 'axios';
+// import axios from 'axios';
 
 const ForgotPassword = () => {
   const [email, setEmail] = React.useState('');
@@ -27,19 +27,20 @@ const ForgotPassword = () => {
       setSnackbarMessage('Please enter a valid email address.');
       setOpenSnackbar(true);
     } else {
-      
+      setOpenSnackbar(true);
+      setTimeout(() => navigate("/"), 3000); 
      
-      try{
-        const response =  await axios.post('https://railways-three.vercel.app/api/password-reset-request/', { email });
-        if (response.status === 200) {
-          setSnackbarMessage('Reset Password Link Sent To Your Email');
-          setOpenSnackbar(true);
-           setTimeout(() => navigate("/"), 3000); 
-      }
-    }catch(error){
-      setSnackbarMessage(error.response?.data?.email );
-        setOpenSnackbar(true);
-      }
+    //   try{
+    //     const response =  await axios.post('https://railways-three.vercel.app/api/password-reset-request/', { email });
+    //     if (response.status === 200) {
+    //       setSnackbarMessage('Reset Password Link Sent To Your Email');
+    //       setOpenSnackbar(true);
+    //        setTimeout(() => navigate("/"), 3000); 
+    //   }
+    // }catch(error){
+    //   setSnackbarMessage(error.response?.data?.email );
+    //     setOpenSnackbar(true);
+    //   }
     }
   };
 

@@ -1,18 +1,20 @@
 import * as React from 'react';
 import {useState,useEffect} from "react"
 import Box from '@mui/material/Box';
-import { Button, FormControl, IconButton, InputLabel, OutlinedInput, Paper, Typography, Snackbar, Alert, Stack } from '@mui/material';
+import { Button, FormControl, IconButton, InputLabel, OutlinedInput, Paper, Typography, Snackbar, Alert, Stack, Backdrop } from '@mui/material';
 import { Link, useNavigate,useLocation } from "react-router-dom";
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import axios from 'axios';
+import CircularProgress from '@mui/material/CircularProgress';
 import queryString from 'query-string';
 
 const ResetPassword = () => {
 const [confPassword,setConfPassword] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [showPassword, setShowPassword] = React.useState(false);
+  const [waiting, setWaiting] = React.useState(false);
   const [showConfPassword, setShowConfPassword] = React.useState(false);
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [snackbarMessage, setSnackbarMessage] = React.useState('');
@@ -40,19 +42,26 @@ const [confPassword,setConfPassword] = React.useState('');
       setSnackbarMessage('Password and Confirm Password Should Be Same');
       setOpenSnackbar(true);
     } else {
-      
-     
-      try{
-        const response =  await axios.post(`https://railways-three.vercel.app/api/password-reset-confirm/${uidb64}/${token}/`, { new_password:confPassword });
-        if (response.status === 200) {
-          setSnackbarMessage('Password Reseted successful!');
+        setWaiting(true)
+        setSnackbarMessage('Password Reseted successful!');
           setOpenSnackbar(true);
-          setTimeout(() => navigate("/"), 3000); 
-      }
-    }catch(error){
-      setSnackbarMessage(error.response?.data?.error|| "Error resetting password" );
-        setOpenSnackbar(true);
-      }
+      setTimeout(() => navigate("/"), 3000); 
+      setWaiting(false)
+     
+    //   try{ 
+    //     setWaiting(true)
+    //     const response =  await axios.post(`https://railways-three.vercel.app/api/password-reset-confirm/${uidb64}/${token}/`, { new_password:confPassword });
+    //     if (response.status === 200) {
+    //       setSnackbarMessage('Password Reseted successful!');
+    //       setOpenSnackbar(true);
+    //       setTimeout(() => navigate("/"), 3000); 
+    //       setWaiting(false)
+    //   }
+    // }catch(error){
+    //   setSnackbarMessage(error.response?.data?.error|| "Error resetting password" );
+    //     setOpenSnackbar(true);
+    //     setWaiting(false)
+    //   }
     }
   };
 
@@ -137,6 +146,13 @@ const [confPassword,setConfPassword] = React.useState('');
           {snackbarMessage}
         </Alert>
       </Snackbar>
+
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={waiting} 
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Box>
   );
 }

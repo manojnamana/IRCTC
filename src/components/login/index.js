@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import axios from 'axios';
+// import axios from 'axios';
 
 const Login = () => {
   const [email, setEmail] = React.useState('');
@@ -33,19 +33,22 @@ const Login = () => {
       setSnackbarMessage('Please enter a valid email address.');
       setOpenSnackbar(true);
     } else {
-      
+
+      setSnackbarMessage('Login successful!');
+      setOpenSnackbar(true);
+      setTimeout(() => navigate("/checktrains"), 3000); 
      
-      try{
-        const response =  await axios.post('https://railways-three.vercel.app/api/login/', { email, password, });
-        if (response.status === 200) {
-          setSnackbarMessage('Login successful!');
-          setOpenSnackbar(true);
-          setTimeout(() => navigate("/checktrains"), 3000); 
-      }
-    }catch(error){
-      setSnackbarMessage(error.response?.data?.error );
-        setOpenSnackbar(true);
-      }
+    //   try{
+    //     const response =  await axios.post('https://railways-three.vercel.app/api/login/', { email, password, });
+    //     if (response.status === 200) {
+    //       setSnackbarMessage('Login successful!');
+    //       setOpenSnackbar(true);
+    //       setTimeout(() => navigate("/checktrains"), 3000); 
+    //   }
+    // }catch(error){
+    //   setSnackbarMessage(error.response?.data?.error );
+    //     setOpenSnackbar(true);
+    //   }
     }
   };
 
